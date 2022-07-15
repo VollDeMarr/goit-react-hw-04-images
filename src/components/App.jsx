@@ -1,24 +1,20 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import ImageGallery from './ImageGallery/ImageGallery';
 import Searchbar from './Searchbar/Searchbar';
 import s from './App.module.css';
+export default function App (){
 
-class App extends Component {
-  state = {
-    requestName: '',
+const [state, setState] = useState('')
+
+ const searchForm = name => {
+    
+  setState(name);
   };
 
-  searchForm = name => {
-    this.setState({ requestName: name });
-  };
-
-  render() {
-    return (
-      <div className={s.App}>
-        <Searchbar onSubmit={this.searchForm} />
-        <ImageGallery requestName={this.state.requestName} />
-      </div>
-    );
-  }
+  return (
+    <div className={s.App}>
+      <Searchbar onSubmit={searchForm} />
+      <ImageGallery requestName={state} />
+    </div>
+  );
 }
-export default App;
