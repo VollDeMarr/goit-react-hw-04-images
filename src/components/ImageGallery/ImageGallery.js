@@ -6,7 +6,7 @@ import Modal from '../Modal/Modal';
 import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
 import s from './ImageGallery.module.css';
 
-export default function ImageGallery({ requestName}) {
+export default function ImageGallery({ requestName }) {
   const [request, setRequest] = useState('');
   const [items, setItems] = useState([]);
   const [page, setPage] = useState(1);
@@ -29,44 +29,40 @@ export default function ImageGallery({ requestName}) {
     setIsOpenModal(false);
   };
 
-  useEffect((prev) => {
-    const fetchRequest = async () => {
-      if (!requestName) {
-        return;
-      }
-      console.log(request)
-      console.log(requestName)
-      if (request !== requestName) {
-        setPage(1)
-      }
-      setStatus('pending');
-      try {
-        setRequest(requestName);
-        const fetchItems = await fetch(
-          `https://pixabay.com/api/?q=${requestName}&page=${page}&key=${KEY}&image_type=photo&orientation=horizontal&per_page=12`
-        );
-        const parsed = await fetchItems.json();
+  useEffect(() => {
+    // const fetchRequest = async () => {
+    if (!requestName) {
+      return;
+    }
+    if (request !== requestName) {
+      setPage(1);
+    }
+    setStatus('pending');
+    setRequest(requestName);
+
+    fetch(
+      `https://pixabay.com/api/?q=${requestName}&page=${page}&key=${KEY}&image_type=photo&orientation=horizontal&per_page=12`
+    )
+      .then(r => r.json())
+      .then(parsed => {
         if (page === 1) {
           setStatus('resolved');
           setItems(parsed.hits);
         } else {
           if (requestName !== request) {
-            setItems(parsed.hits)
+            setItems(parsed.hits);
             setStatus('resolved');
           } else {
             setItems(prevState => [...prevState, ...parsed.hits]);
             setStatus('resolved');
           }
         }
-      } catch (error) {
+      })
+      .catch(error => {
         setError(error);
         setStatus('rejected');
-      }
-    };
-    fetchRequest();
-  }, [requestName, page, KEY, request]);
-
-
+      });
+  }, [KEY, page, request, requestName]);
 
   return (
     <>
@@ -85,7 +81,7 @@ export default function ImageGallery({ requestName}) {
         <ul className={s.ImageGallery}>
           <ImageGalleryItem items={items} onClick={showModal} />
         </ul>
-      {status === 'pending' && <Loader />}
+        {status === 'pending' && <Loader />}
         {status !== 'idle' && <Button onClick={loadMore} />}
       </>
       {isOpenModal && (
