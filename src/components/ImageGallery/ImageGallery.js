@@ -53,17 +53,17 @@ useEffect(() => {
         if (page === 1) {
           setStatus('resolved');
           setItems(response.hits);
-        }  else {
+        }  
+        else {
+          if (requestName !== request) {
+            setItems(response.hits);
+            setStatus('resolved');
+          } else {
             setItems(prevState => [...prevState, ...response.hits]);
             setStatus('resolved');
           }
-        // else {
-        //   if (requestName !== request) {
-        //     setItems(response.hits);
-        //     setStatus('resolved');
-        //   } 
          
-        // }
+        }
       })
       .catch(error => {
         setError(error);
