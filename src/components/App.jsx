@@ -7,7 +7,7 @@ export default function App (){
 const [state, setState] = useState('')
 
  const searchForm = name => {
-    
+      
   setState(name);
   };
 

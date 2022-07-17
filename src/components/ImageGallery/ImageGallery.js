@@ -1,4 +1,3 @@
-// import { Component } from 'react';
 import { useState, useEffect } from 'react';
 import Loader from '../Loader/Loader';
 import Button from '../Button/Button';
@@ -68,7 +67,7 @@ export default function ImageGallery({ requestName }) {
     <>
       {status === 'idle' && (
         <div className={s.container}>
-          <h2>Введіть ваш запит</h2>
+          <h2>Почекун чекає на ваш запит</h2>
           <img
             className={s.img}
             src="https://uatodaynews.files.wordpress.com/2016/01/16388356_1424726200871476_1750686625721868660_n.jpg"

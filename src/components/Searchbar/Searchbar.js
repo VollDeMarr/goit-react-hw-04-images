@@ -4,6 +4,7 @@ import s from './Searchbar.module.css';
 export default function Searchbar({ onSubmit }) {
   const [request, setRequest] = useState('');
 
+
   const submitForm = e => {
     e.preventDefault();
     if (request.trim() === '') {
