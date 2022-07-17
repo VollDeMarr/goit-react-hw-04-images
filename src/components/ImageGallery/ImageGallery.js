@@ -6,7 +6,7 @@ import Modal from '../Modal/Modal';
 import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
 import s from './ImageGallery.module.css';
 
-export default function ImageGallery({ requestName }) {
+export default function ImageGallery({ requestName}) {
   const [request, setRequest] = useState('');
   const [items, setItems] = useState([]);
   const [page, setPage] = useState(1);
@@ -29,10 +29,15 @@ export default function ImageGallery({ requestName }) {
     setIsOpenModal(false);
   };
 
-  useEffect(() => {
+  useEffect((prev) => {
     const fetchRequest = async () => {
       if (!requestName) {
         return;
+      }
+      console.log(request)
+      console.log(requestName)
+      if (request !== requestName) {
+        setPage(1)
       }
       setStatus('pending');
       try {
