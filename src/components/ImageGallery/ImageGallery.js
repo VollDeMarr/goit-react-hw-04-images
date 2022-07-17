@@ -30,7 +30,6 @@ export default function ImageGallery({ requestName }) {
   };
 
   useEffect(() => {
-    // const fetchRequest = async () => {
     if (!requestName) {
       return;
     }
@@ -43,17 +42,17 @@ export default function ImageGallery({ requestName }) {
     fetch(
       `https://pixabay.com/api/?q=${requestName}&page=${page}&key=${KEY}&image_type=photo&orientation=horizontal&per_page=12`
     )
-      .then(r => r.json())
-      .then(parsed => {
+      .then(response => response.json())
+      .then(response => {
         if (page === 1) {
           setStatus('resolved');
-          setItems(parsed.hits);
+          setItems(response.hits);
         } else {
           if (requestName !== request) {
-            setItems(parsed.hits);
+            setItems(response.hits);
             setStatus('resolved');
           } else {
-            setItems(prevState => [...prevState, ...parsed.hits]);
+            setItems(prevState => [...prevState, ...response.hits]);
             setStatus('resolved');
           }
         }
@@ -62,7 +61,8 @@ export default function ImageGallery({ requestName }) {
         setError(error);
         setStatus('rejected');
       });
-  }, [KEY, page, request, requestName]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [KEY, page, requestName]);
 
   return (
     <>
