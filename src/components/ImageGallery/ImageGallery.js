@@ -27,16 +27,23 @@ export default function ImageGallery({ requestName }) {
   const closeModal = () => {
     setIsOpenModal(false);
   };
+useEffect(() => {
+  // setPage(1)
+  console.log('yes dady')
+  // setItems(response.hits);
+  // setStatus('resolved');
+
+}, [requestName])
 
   useEffect(() => {
     if (!requestName) {
       return;
     }
-    if (request !== requestName) {
-      setPage(1);
-    }
+    // if (request !== requestName) {
+    //   setPage(1);
+    // }
     setStatus('pending');
-    setRequest(requestName);
+    // setRequest(requestName);
 
     fetch(
       `https://pixabay.com/api/?q=${requestName}&page=${page}&key=${KEY}&image_type=photo&orientation=horizontal&per_page=12`
@@ -46,15 +53,17 @@ export default function ImageGallery({ requestName }) {
         if (page === 1) {
           setStatus('resolved');
           setItems(response.hits);
-        } else {
-          if (requestName !== request) {
-            setItems(response.hits);
-            setStatus('resolved');
-          } else {
+        }  else {
             setItems(prevState => [...prevState, ...response.hits]);
             setStatus('resolved');
           }
-        }
+        // else {
+        //   if (requestName !== request) {
+        //     setItems(response.hits);
+        //     setStatus('resolved');
+        //   } 
+         
+        // }
       })
       .catch(error => {
         setError(error);
