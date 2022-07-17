@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import s from './Searchbar.module.css';
 
-export default function Searchbar({ onSubmit }) {
+export default function Searchbar({ onSubmit, changePage  }) {
   const [request, setRequest] = useState('');
 
 
@@ -11,6 +11,7 @@ export default function Searchbar({ onSubmit }) {
       return;
     }
     onSubmit(request);
+    changePage(1);
   };
 
   const changeInput = e => {

@@ -5,10 +5,9 @@ import Modal from '../Modal/Modal';
 import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
 import s from './ImageGallery.module.css';
 
-export default function ImageGallery({ requestName }) {
+export default function ImageGallery({ requestName, page, changePage }) {
   const [request, setRequest] = useState('');
   const [items, setItems] = useState([]);
-  const [page, setPage] = useState(1);
   const [KEY] = useState('28064028-9753e04b4800a7fc07442f07d');
   const [error, setError] = useState(null);
   const [status, setStatus] = useState('idle');
@@ -16,7 +15,7 @@ export default function ImageGallery({ requestName }) {
   const [modalData, setModalData] = useState('');
 
   const loadMore = () => {
-    setPage(page + 1);
+    changePage(page + 1);
   };
 
   const showModal = callback => {
@@ -27,23 +26,13 @@ export default function ImageGallery({ requestName }) {
   const closeModal = () => {
     setIsOpenModal(false);
   };
-useEffect(() => {
-  // setPage(1)
-  console.log('yes dady')
-  // setItems(response.hits);
-  // setStatus('resolved');
-
-}, [requestName])
 
   useEffect(() => {
     if (!requestName) {
       return;
     }
-    // if (request !== requestName) {
-    //   setPage(1);
-    // }
     setStatus('pending');
-    // setRequest(requestName);
+    setRequest(requestName);
 
     fetch(
       `https://pixabay.com/api/?q=${requestName}&page=${page}&key=${KEY}&image_type=photo&orientation=horizontal&per_page=12`
@@ -53,8 +42,7 @@ useEffect(() => {
         if (page === 1) {
           setStatus('resolved');
           setItems(response.hits);
-        }  
-        else {
+        } else {
           if (requestName !== request) {
             setItems(response.hits);
             setStatus('resolved');
@@ -62,7 +50,6 @@ useEffect(() => {
             setItems(prevState => [...prevState, ...response.hits]);
             setStatus('resolved');
           }
-         
         }
       })
       .catch(error => {
